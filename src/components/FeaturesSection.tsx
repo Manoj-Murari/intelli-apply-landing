@@ -1,22 +1,32 @@
-import { Search, BrainCircuit, LayoutDashboard } from "lucide-react";
+import { Search, BrainCircuit, LayoutDashboard, Mic } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 const features = [
   {
     icon: Search,
     title: "Automated Job Scraping",
     description: "Pulls new jobs 24/7 from LinkedIn, Indeed, and more based on your smart searches.",
+    comingSoon: false,
   },
   {
     icon: BrainCircuit,
     title: "AI-Powered Analysis",
     description: "Our AI ranks every job against your resume, giving you a 'fit score' from 1-10.",
+    comingSoon: false,
   },
   {
     icon: LayoutDashboard,
     title: "Smart Kanban Tracker",
     description: "Manage all your applications in a simple, drag-and-drop board.",
+    comingSoon: false,
+  },
+  {
+    icon: Mic,
+    title: "AI Mock Interview",
+    description: "Practice your interview skills with an AI that asks you questions based on your resume and the job description.",
+    comingSoon: true,
   },
 ];
 
@@ -35,9 +45,16 @@ const FeatureCard = ({ feature, index }: { feature: typeof features[0]; index: n
       <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
         <feature.icon size={24} />
       </div>
-      <h3 className="text-xl font-bold text-text-primary mb-3">
-        {feature.title}
-      </h3>
+      <div className="flex items-center gap-2 mb-3">
+        <h3 className="text-xl font-bold text-text-primary">
+          {feature.title}
+        </h3>
+        {feature.comingSoon && (
+          <Badge variant="secondary" className="text-xs px-2 py-0.5">
+            Coming Soon
+          </Badge>
+        )}
+      </div>
       <p className="text-text-secondary leading-relaxed">
         {feature.description}
       </p>
@@ -66,7 +83,7 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {features.map((feature, index) => (
             <FeatureCard key={index} feature={feature} index={index} />
           ))}
