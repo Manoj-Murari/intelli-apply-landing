@@ -1,4 +1,6 @@
 import { Search, BrainCircuit, LayoutDashboard } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { cn } from "@/lib/utils";
 
 const features = [
   {
@@ -18,11 +20,44 @@ const features = [
   },
 ];
 
+const FeatureCard = ({ feature, index }: { feature: typeof features[0]; index: number }) => {
+  const animation = useScrollAnimation({ threshold: 0.3 });
+
+  return (
+    <div
+      ref={animation.ref as React.RefObject<HTMLDivElement>}
+      className={cn(
+        "scroll-fade-up p-8 rounded-2xl bg-background border border-border/40 transition-all hover:border-primary/40 hover:shadow-lg",
+        animation.isVisible && "is-visible"
+      )}
+      style={{ transitionDelay: `${index * 0.15}s` }}
+    >
+      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+        <feature.icon size={24} />
+      </div>
+      <h3 className="text-xl font-bold text-text-primary mb-3">
+        {feature.title}
+      </h3>
+      <p className="text-text-secondary leading-relaxed">
+        {feature.description}
+      </p>
+    </div>
+  );
+};
+
 const FeaturesSection = () => {
+  const header = useScrollAnimation({ threshold: 0.3 });
+
   return (
     <section id="features" className="py-24 md:py-32 bg-secondary/30">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+        <div
+          ref={header.ref as React.RefObject<HTMLDivElement>}
+          className={cn(
+            "scroll-fade-up text-center mb-16",
+            header.isVisible && "is-visible"
+          )}
+        >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-4">
             Everything you need to land your dream job
           </h2>
@@ -33,21 +68,7 @@ const FeaturesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="fade-up p-8 rounded-2xl bg-background border border-border/40 transition-all hover:border-primary/40 hover:shadow-lg"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
-                <feature.icon size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-text-primary mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-text-secondary leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
+            <FeatureCard key={index} feature={feature} index={index} />
           ))}
         </div>
       </div>
